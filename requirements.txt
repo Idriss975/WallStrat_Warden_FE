@@ -1,1 +1,2 @@
 reflex==0.5.4
+reflex-type-animation==0.0.1
