@@ -24,12 +24,12 @@ def show_stocks(stock: dict):
                 ),
             )
 
-def stocks(has_link=True) -> rx.Component :
+def stocks(has_link=True, **Components) -> rx.Component :
     return  rx.vstack(
         rx.table.root(
             rx.table.header(
             rx.table.row(
-                rx.table.column_header_cell("Name"),
+                rx.table.column_header_cell("Index"),
                 rx.table.column_header_cell("Prix"),
                 rx.table.column_header_cell("Change"),
                 ),
@@ -39,14 +39,14 @@ def stocks(has_link=True) -> rx.Component :
             ),
             ),
             rx.cond(has_link == True, 
-                    rx.link("View All Stocks.", on_click=rx.redirect("/stocks"), color_scheme="sky"),
+                    rx.link("View All Stocks.", href="/stocks", color_scheme="sky"),
             ),
 
+            **Components,
             border_radius="12px",
             padding="15px",
             align="stretch",
             gap="8px",
-            width="20%",
             background_color=rx.color_mode_cond(light="#FAFAFA", dark="#1E2329"),
     )
             

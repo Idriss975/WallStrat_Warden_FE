@@ -2,15 +2,24 @@ import reflex as rx
 from rxconfig import config
 from reflex.style import color_mode
 
+from .Login import LoginState
+
 def header(Title="WallStreet Warden", Login=False) -> rx.Component :
     return rx.hstack(
                 rx.heading(Title, size="7", on_click=rx.redirect("/")),
 
                 rx.spacer(),
                 
-                rx.cond(Login == True,
+                rx.cond(LoginState.is_loggedin == "false",
                     rx.stack(
-                        rx.button("Login / Sign in", on_click=rx.redirect("/logsign")),
+                        rx.button("Login / Sign up", on_click=rx.redirect("/login")),
+                    ),
+                    rx.hstack(
+                        rx.avatar(fallback=LoginState.Username[0]), 
+                        rx.text(LoginState.Username), 
+                        rx.button("Log out", on_click=LoginState.logout),
+                        
+                        align="center"
                     )
                 ),
                 
