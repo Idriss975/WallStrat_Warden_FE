@@ -8,7 +8,8 @@ class stocks_Table(rx.State):
         {"Index":"TSLA", "Name":"Tesla", "Prix":1526.36, "Change":"+0"},
         {"Index":"TSLA", "Name":"Tesla", "Prix":1526.36, "Change":"-1.5"},
         ]
-
+    def redirr(self, st):
+        return rx.redirect(f"/stocks/{st}")
 def show_stocks(stock: dict):
     return rx.table.row(
                 rx.table.row_header_cell(stock["Index"]),
@@ -22,6 +23,8 @@ def show_stocks(stock: dict):
                         rx.table.cell(stock["Change"], "%", color="gray")
                     )        
                 ),
+                on_click=stocks_Table.redirr(stock["Index"])
+                
             )
 
 def stocks(has_link=True, **Components) -> rx.Component :

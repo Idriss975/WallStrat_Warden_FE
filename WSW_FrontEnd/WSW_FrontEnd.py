@@ -146,9 +146,15 @@ def tested(name):
         t_df["file"] = "Prediction"
         df=pd.concat([t_df, df])
         return df
+class StockName_State(rx.State):
 
-@rx.page(route="/test", title="Log in or Sign in")
-def test():
+    async def onlo(self):
+        ls =await self.get_state(LoginState)
+        if ls.is_loggedin == "false":
+            return rx.redirect("/login")
+
+@rx.page(route="/stocks/TSLA", title="WallStreet Warden - Stocks", on_load=StockName_State.onlo)
+def testA():
     return rx.vstack(
         header(),
         rx.plotly(
@@ -159,16 +165,46 @@ def test():
                 color="file",
             ),
             height="400px"),
-        stocks(),
     )
 
-@rx.page(route="/stocks", title="WallStreet Warden - Stocks")
+@rx.page(route="/stocks/AAPL", title="WallStreet Warden - Stocks", on_load=StockName_State.onlo)
+def testB():
+    return rx.vstack(
+        header(),
+        rx.plotly(
+            data=px.line(
+                tested("AAPL"),
+                x="Date",
+                y="Close",
+                color="file",
+            ),
+            height="400px"),
+    )
+
+class Stocks_State(rx.State):
+    async def loadstocksdata(self):
+        stocks = await self.get_state(stocks_Table)
+        stocks.Stocks = [
+            {"Index":"TSLA", "Name":"Tesla", "Prix":1526.36, "Change":"+1.5"},
+            {"Index":"AAPL", "Name":"Tesla", "Prix":213.25, "Change":"+2.00"},
+        ]
+
+@rx.page(route="/stocks", title="WallStreet Warden - Stocks", on_load=Stocks_State.loadstocksdata)
 def stockspage():
     return rx.vstack(
         header(Login=True),
+
         rx.vstack(
-            
+            rx.heading("Markets Overview"),
+
+            stocks(width="100%",has_link=False),
+
+            margin_left="30px",
+            margin_right="30px",
+            width="100%"
         ),
+
+
         
         width="100%",
         padding_top="0",

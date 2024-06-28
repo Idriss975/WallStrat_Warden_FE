@@ -25,6 +25,9 @@ class LoginState(rx.State):
     def loginredirect(self):
         if self.is_loggedin == "true":
             return rx.redirect("/")
+    def mustlogin(self):
+        if self.is_loggedin == "false":
+            return rx.redirect("/login")
         
     def logout(self):
         self.is_loggedin = "false"
