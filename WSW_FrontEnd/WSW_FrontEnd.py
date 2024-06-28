@@ -72,7 +72,7 @@ def index() -> rx.Component:
                         of analytics, We use a more Objective scientific method to \
                         predict stock prices which eliminates bias, emotion from process."),
             qa("What Services do we provide ?", 
-                    "We used Yahoo Finance to extract the history of prices and apply them int oa graph.\
+                    "We used Yahoo Finance to extract the history of prices and apply them into a graph.\
                     For the prediction we use a python script to run the ARIMA Alogrithm on the graph and get the result."),
             qa("To whom belongs this project ?",
                     "This project belongs to BOULAHYA Ilyas & BERCHIL Idriss."),
@@ -157,28 +157,52 @@ class StockName_State(rx.State):
 def testA():
     return rx.vstack(
         header(),
-        rx.plotly(
+        rx.vstack(
+            rx.plotly(
             data=px.line(
                 tested("TSLA"),
                 x="Date",
                 y="Close",
                 color="file",
             ),
-            height="400px"),
+            height="400px"
+        ),
+        rx.hstack(
+            rx.button("Buy",size="3"), rx.button("Sell",size="3"),
+
+            gap="20px"
+        ),
+
+        align="center",
+        width="100%"
+        ),
+        
     )
 
 @rx.page(route="/stocks/AAPL", title="WallStreet Warden - Stocks", on_load=StockName_State.onlo)
 def testB():
     return rx.vstack(
         header(),
-        rx.plotly(
+        rx.vstack(
+            rx.plotly(
             data=px.line(
                 tested("AAPL"),
                 x="Date",
                 y="Close",
                 color="file",
             ),
-            height="400px"),
+            height="400px"
+        ),
+        rx.hstack(
+            rx.button("Buy",size="3"), rx.button("Sell",size="3"),
+
+            gap="20px"
+        ),
+
+        align="center",
+        width="100%"
+        ),
+        
     )
 
 class Stocks_State(rx.State):
